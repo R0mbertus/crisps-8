@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/chip_8.h
+array
+-
+vector
+-
+chip_8_definitions.h
+../include/chip_8_definitions.h
+
+../include/chip_8_definitions.h
+cstdint
+-
+
+../include/sdl2_init.h
+SDL2/SDL.h
+-
+
+/home/rom/Documents/cpp/crisps-8/src/chip_8.cpp
+chip_8.h
+/home/rom/Documents/cpp/crisps-8/src/chip_8.h
+iostream
+-
+
+/home/rom/Documents/cpp/crisps-8/src/main.cpp
+SDL2/SDL.h
+-
+iostream
+-
+sdl2_init.h
+/home/rom/Documents/cpp/crisps-8/src/sdl2_init.h
+chip_8.h
+/home/rom/Documents/cpp/crisps-8/src/chip_8.h
+

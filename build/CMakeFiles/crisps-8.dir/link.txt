@@ -1,0 +1,1 @@
+/usr/bin/g++  -g   CMakeFiles/crisps-8.dir/src/main.cpp.o CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o CMakeFiles/crisps-8.dir/src/chip_8.cpp.o  -o crisps-8  -lSDL2 
