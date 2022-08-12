@@ -1,5 +1,0 @@
-/home/rom/Documents/cpp/crisps-8/build/CMakeFiles/edit_cache.dir
-/home/rom/Documents/cpp/crisps-8/build/CMakeFiles/package_source.dir
-/home/rom/Documents/cpp/crisps-8/build/CMakeFiles/rebuild_cache.dir
-/home/rom/Documents/cpp/crisps-8/build/CMakeFiles/package.dir
-/home/rom/Documents/cpp/crisps-8/build/CMakeFiles/crisps-8.dir

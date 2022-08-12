@@ -32,4 +32,4 @@
 *.app
 
 # remove cmake stuff
-build/
+build*/
