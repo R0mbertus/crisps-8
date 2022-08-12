@@ -1,1 +1,1 @@
-/usr/bin/g++  -g   CMakeFiles/crisps-8.dir/src/main.cpp.o CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o CMakeFiles/crisps-8.dir/src/chip_8.cpp.o  -o crisps-8  -lSDL2 
+/usr/bin/g++  -g   CMakeFiles/crisps-8.dir/src/chip_8.cpp.o CMakeFiles/crisps-8.dir/src/display.cpp.o CMakeFiles/crisps-8.dir/src/main.cpp.o  -o crisps-8  /usr/lib/x86_64-linux-gnu/libSDL2_image.so /usr/lib/x86_64-linux-gnu/libSDL2main.a /usr/lib/x86_64-linux-gnu/libSDL2.so -lpthread 

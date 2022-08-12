@@ -1,17 +1,17 @@
 [
 {
   "directory": "/home/rom/Documents/cpp/crisps-8/build",
-  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/rom/Documents/cpp/crisps-8/include  -g   -Wall -Wextra -std=gnu++14 -o CMakeFiles/crisps-8.dir/src/main.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/main.cpp",
-  "file": "/home/rom/Documents/cpp/crisps-8/src/main.cpp"
-},
-{
-  "directory": "/home/rom/Documents/cpp/crisps-8/build",
-  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/rom/Documents/cpp/crisps-8/include  -g   -Wall -Wextra -std=gnu++14 -o CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/sdl2_init.cpp",
-  "file": "/home/rom/Documents/cpp/crisps-8/src/sdl2_init.cpp"
-},
-{
-  "directory": "/home/rom/Documents/cpp/crisps-8/build",
-  "command": "/usr/bin/g++   -I/usr/include/SDL2 -I/home/rom/Documents/cpp/crisps-8/include  -g   -Wall -Wextra -std=gnu++14 -o CMakeFiles/crisps-8.dir/src/chip_8.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/chip_8.cpp",
+  "command": "/usr/bin/g++   -I/home/rom/Documents/cpp/crisps-8/src -isystem /usr/include/SDL2  -g   -ansi -Wall -Wextra -Werror -std=gnu++11 -o CMakeFiles/crisps-8.dir/src/chip_8.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/chip_8.cpp",
   "file": "/home/rom/Documents/cpp/crisps-8/src/chip_8.cpp"
+},
+{
+  "directory": "/home/rom/Documents/cpp/crisps-8/build",
+  "command": "/usr/bin/g++   -I/home/rom/Documents/cpp/crisps-8/src -isystem /usr/include/SDL2  -g   -ansi -Wall -Wextra -Werror -std=gnu++11 -o CMakeFiles/crisps-8.dir/src/display.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/display.cpp",
+  "file": "/home/rom/Documents/cpp/crisps-8/src/display.cpp"
+},
+{
+  "directory": "/home/rom/Documents/cpp/crisps-8/build",
+  "command": "/usr/bin/g++   -I/home/rom/Documents/cpp/crisps-8/src -isystem /usr/include/SDL2  -g   -ansi -Wall -Wextra -Werror -std=gnu++11 -o CMakeFiles/crisps-8.dir/src/main.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/main.cpp",
+  "file": "/home/rom/Documents/cpp/crisps-8/src/main.cpp"
 }
 ]

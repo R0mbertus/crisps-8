@@ -57,35 +57,9 @@ include CMakeFiles/crisps-8.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/crisps-8.dir/flags.make
 
-CMakeFiles/crisps-8.dir/src/main.cpp.o: CMakeFiles/crisps-8.dir/flags.make
-CMakeFiles/crisps-8.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/crisps-8.dir/src/main.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/crisps-8.dir/src/main.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/main.cpp
-
-CMakeFiles/crisps-8.dir/src/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/crisps-8.dir/src/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/rom/Documents/cpp/crisps-8/src/main.cpp > CMakeFiles/crisps-8.dir/src/main.cpp.i
-
-CMakeFiles/crisps-8.dir/src/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/crisps-8.dir/src/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rom/Documents/cpp/crisps-8/src/main.cpp -o CMakeFiles/crisps-8.dir/src/main.cpp.s
-
-CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o: CMakeFiles/crisps-8.dir/flags.make
-CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o: ../src/sdl2_init.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o"
-	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/sdl2_init.cpp
-
-CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/rom/Documents/cpp/crisps-8/src/sdl2_init.cpp > CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.i
-
-CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rom/Documents/cpp/crisps-8/src/sdl2_init.cpp -o CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.s
-
 CMakeFiles/crisps-8.dir/src/chip_8.cpp.o: CMakeFiles/crisps-8.dir/flags.make
 CMakeFiles/crisps-8.dir/src/chip_8.cpp.o: ../src/chip_8.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/crisps-8.dir/src/chip_8.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/crisps-8.dir/src/chip_8.cpp.o"
 	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/crisps-8.dir/src/chip_8.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/chip_8.cpp
 
 CMakeFiles/crisps-8.dir/src/chip_8.cpp.i: cmake_force
@@ -96,19 +70,48 @@ CMakeFiles/crisps-8.dir/src/chip_8.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/crisps-8.dir/src/chip_8.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rom/Documents/cpp/crisps-8/src/chip_8.cpp -o CMakeFiles/crisps-8.dir/src/chip_8.cpp.s
 
+CMakeFiles/crisps-8.dir/src/display.cpp.o: CMakeFiles/crisps-8.dir/flags.make
+CMakeFiles/crisps-8.dir/src/display.cpp.o: ../src/display.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/crisps-8.dir/src/display.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/crisps-8.dir/src/display.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/display.cpp
+
+CMakeFiles/crisps-8.dir/src/display.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/crisps-8.dir/src/display.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/rom/Documents/cpp/crisps-8/src/display.cpp > CMakeFiles/crisps-8.dir/src/display.cpp.i
+
+CMakeFiles/crisps-8.dir/src/display.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/crisps-8.dir/src/display.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rom/Documents/cpp/crisps-8/src/display.cpp -o CMakeFiles/crisps-8.dir/src/display.cpp.s
+
+CMakeFiles/crisps-8.dir/src/main.cpp.o: CMakeFiles/crisps-8.dir/flags.make
+CMakeFiles/crisps-8.dir/src/main.cpp.o: ../src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/crisps-8.dir/src/main.cpp.o"
+	/usr/bin/g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/crisps-8.dir/src/main.cpp.o -c /home/rom/Documents/cpp/crisps-8/src/main.cpp
+
+CMakeFiles/crisps-8.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/crisps-8.dir/src/main.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/rom/Documents/cpp/crisps-8/src/main.cpp > CMakeFiles/crisps-8.dir/src/main.cpp.i
+
+CMakeFiles/crisps-8.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/crisps-8.dir/src/main.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/rom/Documents/cpp/crisps-8/src/main.cpp -o CMakeFiles/crisps-8.dir/src/main.cpp.s
+
 # Object files for target crisps-8
 crisps__8_OBJECTS = \
-"CMakeFiles/crisps-8.dir/src/main.cpp.o" \
-"CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o" \
-"CMakeFiles/crisps-8.dir/src/chip_8.cpp.o"
+"CMakeFiles/crisps-8.dir/src/chip_8.cpp.o" \
+"CMakeFiles/crisps-8.dir/src/display.cpp.o" \
+"CMakeFiles/crisps-8.dir/src/main.cpp.o"
 
 # External object files for target crisps-8
 crisps__8_EXTERNAL_OBJECTS =
 
-crisps-8: CMakeFiles/crisps-8.dir/src/main.cpp.o
-crisps-8: CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o
 crisps-8: CMakeFiles/crisps-8.dir/src/chip_8.cpp.o
+crisps-8: CMakeFiles/crisps-8.dir/src/display.cpp.o
+crisps-8: CMakeFiles/crisps-8.dir/src/main.cpp.o
 crisps-8: CMakeFiles/crisps-8.dir/build.make
+crisps-8: /usr/lib/x86_64-linux-gnu/libSDL2_image.so
+crisps-8: /usr/lib/x86_64-linux-gnu/libSDL2main.a
+crisps-8: /usr/lib/x86_64-linux-gnu/libSDL2.so
 crisps-8: CMakeFiles/crisps-8.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/rom/Documents/cpp/crisps-8/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable crisps-8"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/crisps-8.dir/link.txt --verbose=$(VERBOSE)

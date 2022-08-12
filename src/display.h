@@ -1,6 +1,7 @@
-#ifndef SDL2_INIT_H
-#define SDL2_INIT_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 int init_window(SDL_Window* window);
 

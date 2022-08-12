@@ -172,6 +172,33 @@ src/chip_8.cpp.s:
 	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/chip_8.cpp.s
 .PHONY : src/chip_8.cpp.s
 
+src/display.o: src/display.cpp.o
+
+.PHONY : src/display.o
+
+# target to build an object file
+src/display.cpp.o:
+	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/display.cpp.o
+.PHONY : src/display.cpp.o
+
+src/display.i: src/display.cpp.i
+
+.PHONY : src/display.i
+
+# target to preprocess a source file
+src/display.cpp.i:
+	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/display.cpp.i
+.PHONY : src/display.cpp.i
+
+src/display.s: src/display.cpp.s
+
+.PHONY : src/display.s
+
+# target to generate assembly for a file
+src/display.cpp.s:
+	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/display.cpp.s
+.PHONY : src/display.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -199,33 +226,6 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/sdl2_init.o: src/sdl2_init.cpp.o
-
-.PHONY : src/sdl2_init.o
-
-# target to build an object file
-src/sdl2_init.cpp.o:
-	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.o
-.PHONY : src/sdl2_init.cpp.o
-
-src/sdl2_init.i: src/sdl2_init.cpp.i
-
-.PHONY : src/sdl2_init.i
-
-# target to preprocess a source file
-src/sdl2_init.cpp.i:
-	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.i
-.PHONY : src/sdl2_init.cpp.i
-
-src/sdl2_init.s: src/sdl2_init.cpp.s
-
-.PHONY : src/sdl2_init.s
-
-# target to generate assembly for a file
-src/sdl2_init.cpp.s:
-	$(MAKE) -f CMakeFiles/crisps-8.dir/build.make CMakeFiles/crisps-8.dir/src/sdl2_init.cpp.s
-.PHONY : src/sdl2_init.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -240,12 +240,12 @@ help:
 	@echo "... src/chip_8.o"
 	@echo "... src/chip_8.i"
 	@echo "... src/chip_8.s"
+	@echo "... src/display.o"
+	@echo "... src/display.i"
+	@echo "... src/display.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/sdl2_init.o"
-	@echo "... src/sdl2_init.i"
-	@echo "... src/sdl2_init.s"
 .PHONY : help
 
 
