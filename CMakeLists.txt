@@ -18,5 +18,4 @@ target_include_directories(${PROJECT_NAME} PRIVATE src/)
 
 # Add SDL2 library
 find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-target_link_libraries(${PROJECT_NAME} SDL2::Main SDL2::Image)
+target_link_libraries(${PROJECT_NAME} SDL2::Main)
