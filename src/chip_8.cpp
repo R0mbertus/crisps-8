@@ -34,8 +34,11 @@ Chip8::Chip8() {
     srand(time(0));
 }
 
-std::array<WORD, (64*32)> Chip8::getDisplay() {
-    return display;
+void Chip8::printMemory() {
+    for (auto& x: memory) {
+        printf("%X ", x);
+    }
+    std::cout << std::endl;
 }
 
 void Chip8::loadRom(const char* filePath) {
@@ -68,7 +71,7 @@ void Chip8::instructions() {
         switch (instruction)
         {
         case 0x00E0: {
-            std::fill(display.begin(), display.end(), 0);
+            // display
             }break;
         case 0x00EE: {
             pc = stack[sp--];
