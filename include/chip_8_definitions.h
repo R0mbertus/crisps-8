@@ -2,8 +2,8 @@
 #define CHIP_8_DEFINITIONS_H
 #include <cstdint>
 
-#define BYTE    uint_fast8_t
-#define SHORT   uint_fast16_t
-#define WORD    uint_fast32_t
+using BYTE = uint8_t;
+using SHORT = uint16_t;
+using WORD = uint_fast32_t;
 
 #endif

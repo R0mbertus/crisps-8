@@ -6,12 +6,12 @@
 
 class Display
 {
-    SDL_Window* window;
-    SDL_Renderer* renderer;
-    SDL_Texture* texture;
+    SDL_Window* window_;
+    SDL_Renderer* renderer_;
+    SDL_Texture* texture_;
 public:
-    Display(int scale = 8);
-    ~Display(void);
+    explicit Display(int scale = 8);
+    ~Display();
     void update(std::array<WORD, (64*32)> display);
 };
 

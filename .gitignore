@@ -33,3 +33,7 @@
 
 # remove cmake stuff
 build/
+cmake-build-debug/
+
+.idea/
+.cache/

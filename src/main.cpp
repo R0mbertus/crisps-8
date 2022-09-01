@@ -1,7 +1,6 @@
-#include <SDL2/SDL.h>
-#include <iostream>
 #include "display.h"
 #include "chip_8.h"
+#include <SDL2/SDL.h>
 
 int main() {
     Display display;
@@ -12,9 +11,10 @@ int main() {
 
     const char * temp = "data/PONG";
     chip8.loadRom(temp);
-    chip8.instructions();
-    
-    SDL_Delay(5000);
+    while (true) {
+        chip8.instructions();
+        display.update(chip8.getDisplay());
+    }
 
     return 0;
 }
