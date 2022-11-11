@@ -228,7 +228,7 @@ auto Chip8::instructions() -> void {
                     BYTE v_register_value = v_registers_[x];
                     memory_[I_ + 2] = v_register_value % 10;
                     v_register_value /= 10;
-                    memory_[I_ + 2] = v_register_value % 10;
+                    memory_[I_ + 1] = v_register_value % 10;
                     v_register_value /= 10;
                     memory_[I_] = v_register_value % 10;
                 } break;
