@@ -13,12 +13,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2)
 
-set(CMAKE_CXX_CLANG_TIDY clang-tidy; -export-fixes=fixes.yaml;)
-
 file(GLOB SOURCES "src/*.cpp")
 add_executable(crisps-8 ${SOURCES})
 
-target_compile_options(crisps-8 PRIVATE -Wall -Wextra -Werror)
+target_compile_options(crisps-8 PRIVATE -Wall -Wextra )
 target_include_directories(crisps-8 PRIVATE include/)
 
 # Add SDL2 library

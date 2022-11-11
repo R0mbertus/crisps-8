@@ -163,17 +163,19 @@ auto Chip8::instructions() -> void {
         case 0xD: {
             BYTE x = nibble(opcode_, 0x0F00, 8);
             BYTE y = nibble(opcode_, 0x00F0, 4);
-            BYTE rows = opcode_ * 0x000F;
-            BYTE x_pos = v_registers_[x] & 63;
-            BYTE y_pos = v_registers_[y] & 31;
+            BYTE height = opcode_ & 0x000F;
+            BYTE x_pos = v_registers_[x] % kHeight;
+            BYTE y_pos = v_registers_[y] % kWidth;
             v_registers_[0xF] = 0;
-            for (auto& row : rows) {
-                WORD spriteData = memory_[I_ + row];
-                if (y_pos + row < kHeight) {
-                    for(unsigned int spriteBit = 0; spriteBit < 8; spriteBit++) {
-                        if (x_pos + spriteBit < kWidth) {
-                            
+            for (BYTE row = 0; row < height; row++) {
+                WORD data = memory_[I_ + row];
+                for(unsigned int column = 0; column < 8; column++) {
+                    BYTE pixel = data & (0x80u >> column);
+                    if (pixel) {
+                        if (display_[(y_pos + row) * kHeight + (x_pos + column)]) {
+                            v_registers_[0xF] = 1;
                         }
+                        display_[(y_pos + row) * kHeight + (x_pos + column)] ^= 0xFFFFFFFF;
                     }
                 }
             }
@@ -181,12 +183,12 @@ auto Chip8::instructions() -> void {
         case 0xE: {//keys
             nibblet = opcode_ & 0x00FF;
             switch (nibblet) {
-                // case 0x9E: {
-                //     printf("not implemented %X\n", nibblet);
-                // } break;
-                // case 0xA1: {
-                //     printf("not implemented %X\n", nibblet);
-                // } break;
+                case 0x9E: {
+                    printf("not implemented %X\n", nibblet);
+                } break;
+                case 0xA1: {
+                    printf("not implemented %X\n", nibblet);
+                } break;
             }
         } break;
         case 0xF: {
