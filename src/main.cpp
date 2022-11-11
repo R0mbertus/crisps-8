@@ -12,6 +12,7 @@ int main() {
     const char * temp = "data/PONG";
     chip8.loadRom(temp);
     while (true) {
+        std::cout << "test\n";
         chip8.instructions();
         display.update(chip8.getDisplay());
     }

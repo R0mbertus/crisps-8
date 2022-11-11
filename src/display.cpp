@@ -8,7 +8,7 @@ Display::Display(int scale) {
     window_ = SDL_CreateWindow(
             "chips-8",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            32 * scale, 64 * scale,
+            64 * scale, 32 * scale,
             SDL_WINDOW_SHOWN);
     if (window_ == nullptr) {//In case the window couldn't be created, throw exception
         throw "Could not create window: ";
@@ -22,7 +22,7 @@ Display::Display(int scale) {
 
     texture_ = SDL_CreateTexture(
             renderer_, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-            32, 64);
+            64, 32);
     if (texture_ == nullptr) {
         throw "Could not create texture: ";
     }

@@ -12,7 +12,7 @@ constexpr const int kSmallSize = 0x10;
 
 class Chip8 {
     std::array<WORD, kDisplaySize> display_{};
-    //std::array<std::array<BYTE, 4>, 4> keypad_{};
+    std::array<BYTE, 16> keypad_{};
     std::array<BYTE, kMemorySize> memory_{};
     std::array<BYTE, kSmallSize> v_registers_{};
     std::array<SHORT, kSmallSize> stack_{};

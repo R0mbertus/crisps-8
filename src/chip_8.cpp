@@ -182,24 +182,35 @@ auto Chip8::instructions() -> void {
         } break;
         case 0xE: {//keys
             nibblet = opcode_ & 0x00FF;
+            SHORT x = nibble(opcode_, 0x0F00, 8);
+            BYTE key = v_registers_[x];
             switch (nibblet) {
                 case 0x9E: {
-                    printf("not implemented %X\n", nibblet);
+                    if (keypad_[key]) {
+                        pc_ += 2;
+                    }
                 } break;
                 case 0xA1: {
-                    printf("not implemented %X\n", nibblet);
+                    if (!keypad_[key]) {
+                        pc_ += 2;
+                    }
                 } break;
             }
         } break;
         case 0xF: {
             nibblet = opcode_ & 0x00FF;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
+            BYTE x = nibble(opcode_, 0x0F00, 8);
             switch (nibblet) {
                 case 0x07: {
                     v_registers_[x] = delay_timer_;
                 } break;
                 case 0x0A: {
-                    //keypress
+                    for (BYTE i = 0; i < 16; i++) {
+                        if (keypad_[i]) {
+                            v_registers_[x] = i;
+                            break;
+                        }
+                    }
                 } break;
                 case 0x15: {
                     delay_timer_ = v_registers_[x];
@@ -214,7 +225,12 @@ auto Chip8::instructions() -> void {
                     I_ = (v_registers_[x] * 5) + kFontsetSize;
                 } break;
                 case 0x33: {
-                    printf("not implemented %X\n", nibblet);
+                    BYTE v_register_value = v_registers_[x];
+                    memory_[I_ + 2] = v_register_value % 10;
+                    v_register_value /= 10;
+                    memory_[I_ + 2] = v_register_value % 10;
+                    v_register_value /= 10;
+                    memory_[I_] = v_register_value % 10;
                 } break;
                 case 0x55: {
                     for (int i = 0; i < 16; i++) {
