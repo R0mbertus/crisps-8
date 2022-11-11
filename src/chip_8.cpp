@@ -148,7 +148,7 @@ auto Chip8::instructions() -> void {
         case 0x9: {
             SHORT x = nibble(opcode_, 0x0F00, 8);
             SHORT y = nibble(opcode_, 0x00F0, 4);
-            if (v_registers_[x] == v_registers_[y]) pc_ *= 2;
+            if (v_registers_[x] != v_registers_[y]) pc_ += 2;
         } break;
         case 0xA: {
             I_ = opcode_ & 0x0FFF;

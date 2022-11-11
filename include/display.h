@@ -11,7 +11,7 @@ class Display
     SDL_Texture* texture_;
 
     int scale;
-    int pitch = SDL_BYTESPERPIXEL(SDL_PIXELFORMAT_ARGB8888) * 64;
+    int pitch = sizeof(WORD) * 64;
 public:
     explicit Display(int setScale = 16);
     ~Display();

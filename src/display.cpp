@@ -21,7 +21,7 @@ Display::Display(int setScale) {
     }
 
     texture_ = SDL_CreateTexture(
-            renderer_, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+            renderer_, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC,
             64, 32);
     if (texture_ == nullptr) {
         throw std::runtime_error("Could not create texture: ");
