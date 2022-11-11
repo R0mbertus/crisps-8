@@ -9,12 +9,12 @@ int main() {
     
     display.update(chip8.getDisplay());
 
-    const char * temp = "data/PONG";
+    const char * temp = "data/test_opcode.ch8";
     chip8.loadRom(temp);
     while (true) {
-        std::cout << "test\n";
         chip8.instructions();
         display.update(chip8.getDisplay());
+        if (display.EventHandler()) break;
     }
 
     return 0;
