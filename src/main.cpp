@@ -15,12 +15,25 @@ int main(int argc, char* argv[]) {
     
     display.update(chip8.getDisplay());
 
-    const char * temp = argv[3];
-    chip8.loadRom(temp);
+    const char *rom = argv[3];
+    chip8.loadRom(rom);
+    
+    uint32_t startTick;
+    uint32_t frameTick;
+    uint32_t delayPerFrame = std::stoi(argv[2]);
+    
     while (true) {
+        startTick = SDL_GetTicks();
+        
         chip8.instructions();
         display.update(chip8.getDisplay());
         if (display.EventHandler()) break;
+        chip8.setKeypad(display.getKeypad());
+
+        frameTick = SDL_GetTicks() - startTick;
+        if (frameTick < delayPerFrame) {
+            SDL_Delay(delayPerFrame - frameTick);
+        }
     }
 
     return 0;

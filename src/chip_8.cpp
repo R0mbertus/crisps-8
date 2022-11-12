@@ -40,6 +40,10 @@ std::array<WORD, kDisplaySize> Chip8::getDisplay() {
     return display_;
 }
 
+void Chip8::setKeypad(std::array<BYTE, 16> newKeypad) {
+    keypad_ = newKeypad;
+}
+
 void Chip8::loadRom(const char *filePath) {
     std::ifstream fs;
     fs.open(filePath, std::ios::binary);
@@ -69,7 +73,7 @@ auto Chip8::instructions() -> void {
                     std::fill(display_.begin(), display_.end(), 0);
                 } break;
                 case 0x00EE: {
-                    pc_ = stack_[sp_--];
+                    pc_ = stack_[--sp_];
                 } break;
             }
         } break;
@@ -77,7 +81,7 @@ auto Chip8::instructions() -> void {
             pc_ = opcode_ & 0x0FFF;
         } break;
         case 0x2: {
-            stack_[++sp_] = pc_;
+            stack_[sp_++] = pc_;
             pc_ = opcode_ & 0x0FFF;
         } break;
         case 0x3: {
@@ -123,24 +127,28 @@ auto Chip8::instructions() -> void {
                     v_registers_[x] ^= v_registers_[y];
                 } break;
                 case 0x4: {
-                    v_registers_[0xF] = static_cast<BYTE>((v_registers_[x] + v_registers_[y]) > 255);
-                    v_registers_[x] += v_registers_[y];
+                    SHORT sum = v_registers_[x] + v_registers_[y];
+                    if (sum > 255u) { v_registers_[0xF] = 1; }
+                    else            { v_registers_[0xF] = 0; }
+                    v_registers_[x] = sum & 0xFFu;
                 } break;
                 case 0x5: {
-                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] > v_registers_[y]);
+                    if (v_registers_[x] > v_registers_[y])  { v_registers_[0xF] = 1; }
+                    else                                    { v_registers_[0xF] = 0; }
                     v_registers_[x] -= v_registers_[y];
                 } break;
                 case 0x6: {
-                    v_registers_[0xF] = v_registers_[x] & 1;
-                    v_registers_[x] /= 2;
+                    v_registers_[0xF] = v_registers_[x] & 0x1u;
+                    v_registers_[x] >>= 1;
                 } break;
                 case 0x7: {
-                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[y] > v_registers_[x]);
+                    if (v_registers_[y] > v_registers_[x])  { v_registers_[0xF] = 1; }
+                    else                                    { v_registers_[0xF] = 0; }
                     v_registers_[x] = v_registers_[y] - v_registers_[x];
                 } break;
                 case 0xE: {
-                    v_registers_[0xF] = (v_registers_[x] >> 7) & 1;
-                    v_registers_[x] *= 2;
+                    v_registers_[0xF] = (v_registers_[x] & 0x80u) >> 7u;
+                    v_registers_[x] <<= 1;
                 } break;
             }
             break;

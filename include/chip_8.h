@@ -26,6 +26,7 @@ class Chip8 {
 public:
     Chip8();
     std::array<WORD, (kDisplaySize)> getDisplay();
+    void setKeypad(std::array<BYTE, 16> newKeypad);
     void loadRom(const char *filePath);
     static SHORT nibble(SHORT val, SHORT val_to_binary_and, int bits);
     void instructions();

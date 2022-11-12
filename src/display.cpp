@@ -51,8 +51,53 @@ bool Display::EventHandler() {
                 case SDL_WINDOWEVENT_CLOSE:
                     return true;
             }
+        case SDL_KEYDOWN:
+            keypress(event, 0);
+        case SDL_KEYUP:
+            keypress(event, 1);
         default:
             return false;
     }
     return false;
+}
+
+void Display::keypress(SDL_Event event, BYTE valToSet) {
+    switch (event.key.keysym.sym) {
+        case SDLK_1:
+            keypad_[0] = valToSet;
+        case SDLK_2:
+            keypad_[1] = valToSet;
+        case SDLK_3:
+            keypad_[2] = valToSet;
+        case SDLK_4:
+            keypad_[3] = valToSet;
+        case SDLK_q:
+            keypad_[4] = valToSet;
+        case SDLK_w:
+            keypad_[5] = valToSet;
+        case SDLK_e:
+            keypad_[6] = valToSet;
+        case SDLK_r:
+            keypad_[7] = valToSet;
+        case SDLK_a:
+            keypad_[8] = valToSet;
+        case SDLK_s:
+            keypad_[9] = valToSet;
+        case SDLK_d:
+            keypad_[10] = valToSet;
+        case SDLK_f:
+            keypad_[11] = valToSet;
+        case SDLK_z:
+            keypad_[12] = valToSet;
+        case SDLK_x:
+            keypad_[13] = valToSet;
+        case SDLK_c:
+            keypad_[14] = valToSet;
+        case SDLK_v:
+            keypad_[15] = valToSet;
+    }
+}
+
+std::array<BYTE, 16> Display::getKeypad() {
+    return keypad_;
 }

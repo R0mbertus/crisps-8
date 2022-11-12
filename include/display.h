@@ -12,11 +12,16 @@ class Display
 
     int scale;
     int pitch = sizeof(WORD) * 64;
+    std::array<BYTE, 16> keypad_{};
 public:
     explicit Display(int setScale = 16);
     ~Display();
     void update(std::array<WORD, (64*32)> display);
     bool EventHandler();
+    void keypress(SDL_Event event, BYTE valToSet);
+    std::array<BYTE, 16> getKeypad();
 };
+
+
 
 #endif
