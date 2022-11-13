@@ -166,7 +166,8 @@ auto Chip8::instructions() -> void {
         } break;
         case 0xC: {
             SHORT x = nibble(opcode_, 0x0F00, 8);
-            v_registers_[x] = (opcode_ & 0x00FF) & (rand() % 256);
+            BYTE value = opcode_ & 0x00FF;
+            v_registers_[x] = value & rand();
         } break;
         case 0xD: {
             BYTE x = nibble(opcode_, 0x0F00, 8);
@@ -218,7 +219,11 @@ auto Chip8::instructions() -> void {
                             v_registers_[x] = i;
                             break;
                         }
+                        else if (i == 15) {
+                            pc_ -= 2;
+                        }
                     }
+                    
                 } break;
                 case 0x15: {
                     delay_timer_ = v_registers_[x];
@@ -241,12 +246,12 @@ auto Chip8::instructions() -> void {
                     memory_[I_] = v_register_value % 10;
                 } break;
                 case 0x55: {
-                    for (int i = 0; i < 16; i++) {
+                    for (int i = 0; i <= x; i++) {
                         memory_[I_ + i] = v_registers_[i];
                     }
                 } break;
                 case 0x65: {
-                    for (int i = 0; i < 16; i++) {
+                    for (int i = 0; i <= x; i++) {
                         v_registers_[i] = memory_[I_ + i];
                     }
                 } break;

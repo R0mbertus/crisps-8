@@ -44,32 +44,37 @@ void Display::update(std::array<WORD, (64 * 32)> display) {
 
 bool Display::EventHandler() {
     SDL_Event event;
-    SDL_PollEvent(&event);
-    switch (event.type) {
-        case SDL_WINDOWEVENT:
-            switch (event.window.event) {
-                case SDL_WINDOWEVENT_CLOSE:
-                    return true;
-            }
-        case SDL_KEYDOWN:
-            keypress(event, 0);
-        case SDL_KEYUP:
-            keypress(event, 1);
-        default:
-            return false;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_WINDOWEVENT:
+                switch (event.window.event) {
+                    case SDL_WINDOWEVENT_CLOSE:
+                        return true;
+                    default:
+                        break;
+                }
+            case SDL_KEYDOWN:
+                keypress(event, 1);
+                break;
+            case SDL_KEYUP:
+                keypress(event, 0);
+                break;
+            default:
+                break;
+        }
     }
     return false;
 }
 
 void Display::keypress(SDL_Event event, BYTE valToSet) {
     switch (event.key.keysym.sym) {
-        case SDLK_1:
+        case SDLK_x:
             keypad_[0] = valToSet;
-        case SDLK_2:
+        case SDLK_1:
             keypad_[1] = valToSet;
-        case SDLK_3:
+        case SDLK_2:
             keypad_[2] = valToSet;
-        case SDLK_4:
+        case SDLK_3:
             keypad_[3] = valToSet;
         case SDLK_q:
             keypad_[4] = valToSet;
@@ -89,7 +94,7 @@ void Display::keypress(SDL_Event event, BYTE valToSet) {
             keypad_[11] = valToSet;
         case SDLK_z:
             keypad_[12] = valToSet;
-        case SDLK_x:
+        case SDLK_4:
             keypad_[13] = valToSet;
         case SDLK_c:
             keypad_[14] = valToSet;

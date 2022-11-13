@@ -25,10 +25,10 @@ int main(int argc, char* argv[]) {
     while (true) {
         startTick = SDL_GetTicks();
         
-        chip8.instructions();
-        display.update(chip8.getDisplay());
         if (display.EventHandler()) break;
         chip8.setKeypad(display.getKeypad());
+        chip8.instructions();
+        display.update(chip8.getDisplay());
 
         frameTick = SDL_GetTicks() - startTick;
         if (frameTick < delayPerFrame) {
