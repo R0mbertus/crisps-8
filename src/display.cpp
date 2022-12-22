@@ -1,14 +1,13 @@
 #include "display.h"
-#include "chip_8_definitions.h"
 
-Display::Display(int setScale) {
+Display::Display(int set_scale) {
     SDL_Init(SDL_INIT_VIDEO);
-    scale = setScale;
+    scale_ = set_scale;
 
     window_ = SDL_CreateWindow(
             "chips-8",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            64 * scale, 32 * scale,
+            kHeight * scale_, kWidth * scale_,
             SDL_WINDOW_SHOWN);
     if (window_ == nullptr) {//In case the window couldn't be created, throw exception
         throw std::runtime_error("Could not create window: ");
@@ -22,7 +21,7 @@ Display::Display(int setScale) {
 
     texture_ = SDL_CreateTexture(
             renderer_, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC,
-            64, 32);
+            kHeight, kWidth);
     if (texture_ == nullptr) {
         throw std::runtime_error("Could not create texture: ");
     }
@@ -35,14 +34,14 @@ Display::~Display() {
     SDL_Quit();
 }
 
-void Display::update(std::array<WORD, (64 * 32)> display) {
-    SDL_UpdateTexture(texture_, nullptr, &display, pitch);
+void Display::update(std::array<WORD, (kHeight * kWidth)> display) {
+    SDL_UpdateTexture(texture_, nullptr, &display, pitch_);
     SDL_RenderClear(renderer_);
     SDL_RenderCopy(renderer_, texture_, nullptr, nullptr);
     SDL_RenderPresent(renderer_);
 }
 
-bool Display::EventHandler() {
+bool Display::EventHandler(Chip8 &chip8) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
@@ -53,11 +52,12 @@ bool Display::EventHandler() {
                     default:
                         break;
                 }
+                break;
             case SDL_KEYDOWN:
-                keypress(event, 1);
+                keypress(event, 1, chip8);
                 break;
             case SDL_KEYUP:
-                keypress(event, 0);
+                keypress(event, 0, chip8);
                 break;
             default:
                 break;
@@ -66,43 +66,10 @@ bool Display::EventHandler() {
     return false;
 }
 
-void Display::keypress(SDL_Event event, BYTE valToSet) {
-    switch (event.key.keysym.sym) {
-        case SDLK_x:
-            keypad_[0] = valToSet;
-        case SDLK_1:
-            keypad_[1] = valToSet;
-        case SDLK_2:
-            keypad_[2] = valToSet;
-        case SDLK_3:
-            keypad_[3] = valToSet;
-        case SDLK_q:
-            keypad_[4] = valToSet;
-        case SDLK_w:
-            keypad_[5] = valToSet;
-        case SDLK_e:
-            keypad_[6] = valToSet;
-        case SDLK_r:
-            keypad_[7] = valToSet;
-        case SDLK_a:
-            keypad_[8] = valToSet;
-        case SDLK_s:
-            keypad_[9] = valToSet;
-        case SDLK_d:
-            keypad_[10] = valToSet;
-        case SDLK_f:
-            keypad_[11] = valToSet;
-        case SDLK_z:
-            keypad_[12] = valToSet;
-        case SDLK_4:
-            keypad_[13] = valToSet;
-        case SDLK_c:
-            keypad_[14] = valToSet;
-        case SDLK_v:
-            keypad_[15] = valToSet;
+void Display::keypress(SDL_Event event, BYTE val_to_set, Chip8 &chip8) {
+    for (BYTE i = 0; i < kSmallSize; i++) {
+        if (event.key.keysym.sym == keymap_[i]) {
+            chip8.setKey(i, val_to_set);
+        }
     }
-}
-
-std::array<BYTE, 16> Display::getKeypad() {
-    return keypad_;
 }

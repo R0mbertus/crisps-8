@@ -4,32 +4,47 @@
 #include <array>
 #include <vector>
 
-constexpr const int kHeight = 64;
-constexpr const int kWidth = 32;
-constexpr const int kDisplaySize = kHeight * kWidth;
-constexpr const int kMemorySize = 0x1000;
-constexpr const int kSmallSize = 0x10;
+const std::array<BYTE, kFontsetSize> kFontset = {
+    0xF0, 0x90, 0x90, 0x90, 0xF0,// 0
+    0x20, 0x60, 0x20, 0x20, 0x70,// 1
+    0xF0, 0x10, 0xF0, 0x80, 0xF0,// 2
+    0xF0, 0x10, 0xF0, 0x10, 0xF0,// 3
+    0x90, 0x90, 0xF0, 0x10, 0x10,// 4
+    0xF0, 0x80, 0xF0, 0x10, 0xF0,// 5
+    0xF0, 0x80, 0xF0, 0x90, 0xF0,// 6
+    0xF0, 0x10, 0x20, 0x40, 0x40,// 7
+    0xF0, 0x90, 0xF0, 0x90, 0xF0,// 8
+    0xF0, 0x90, 0xF0, 0x10, 0xF0,// 9
+    0xF0, 0x90, 0xF0, 0x90, 0x90,// A
+    0xE0, 0x90, 0xE0, 0x90, 0xE0,// B
+    0xF0, 0x80, 0x80, 0x80, 0xF0,// C
+    0xE0, 0x90, 0x90, 0x90, 0xE0,// D
+    0xF0, 0x80, 0xF0, 0x80, 0xF0,// E
+    0xF0, 0x80, 0xF0, 0x80, 0x80 // F
+};
 
 class Chip8 {
-    std::array<WORD, kDisplaySize> display_{};
-    std::array<BYTE, 16> keypad_{};
-    std::array<BYTE, kMemorySize> memory_{};
-    std::array<BYTE, kSmallSize> v_registers_{};
-    std::array<SHORT, kSmallSize> stack_{};
-    SHORT opcode_;
-    SHORT pc_;
-    SHORT I_;
-    BYTE sp_;
-    BYTE delay_timer_;
-    BYTE sound_timer_;
+    std::array<WORD, kDisplaySize> display_ = {};
+    std::array<BYTE, kSmallSize> keypad_ = {};
+    std::array<BYTE, kMemorySize> memory_ = {};
+    std::array<BYTE, kSmallSize> v_registers_ = {};
+    std::array<SHORT, kSmallSize> stack_ = {};
+    SHORT opcode_ = {};
+    SHORT pc_ = kStart;
+    SHORT I_ = {};
+    BYTE sp_ = {};
+    BYTE delay_timer_ = {};
+    BYTE sound_timer_ = {};
 
 public:
     Chip8();
     std::array<WORD, (kDisplaySize)> getDisplay();
-    void setKeypad(std::array<BYTE, 16> newKeypad);
     void loadRom(const char *filePath);
     static SHORT nibble(SHORT val, SHORT val_to_binary_and, int bits);
+    void setKey(BYTE key, BYTE state);
     void instructions();
+
+    bool draw_{true};
 };
 
 #endif

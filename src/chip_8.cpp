@@ -6,33 +6,11 @@
 #include <iostream>
 #include <random>
 
-const int kStart = 0x200;
-const int kFontsetSize = 0x50;
-const std::array<BYTE, kFontsetSize> kFontset = {
-        0xF0, 0x90, 0x90, 0x90, 0xF0,// 0
-        0x20, 0x60, 0x20, 0x20, 0x70,// 1
-        0xF0, 0x10, 0xF0, 0x80, 0xF0,// 2
-        0xF0, 0x10, 0xF0, 0x10, 0xF0,// 3
-        0x90, 0x90, 0xF0, 0x10, 0x10,// 4
-        0xF0, 0x80, 0xF0, 0x10, 0xF0,// 5
-        0xF0, 0x80, 0xF0, 0x90, 0xF0,// 6
-        0xF0, 0x10, 0x20, 0x40, 0x40,// 7
-        0xF0, 0x90, 0xF0, 0x90, 0xF0,// 8
-        0xF0, 0x90, 0xF0, 0x10, 0xF0,// 9
-        0xF0, 0x90, 0xF0, 0x90, 0x90,// A
-        0xE0, 0x90, 0xE0, 0x90, 0xE0,// B
-        0xF0, 0x80, 0x80, 0x80, 0xF0,// C
-        0xE0, 0x90, 0x90, 0x90, 0xE0,// D
-        0xF0, 0x80, 0xF0, 0x80, 0xF0,// E
-        0xF0, 0x80, 0xF0, 0x80, 0x80 // F
-};
-
 Chip8::Chip8() {
-    for (int i = 0; i < static_cast<int>(kFontset.size()); i++) {
+    for (size_t i = 0; i < kFontsetSize; i++) {
         memory_[kFontsetSize + i] = kFontset[i];
     }
-    pc_ = kStart, I_ = 0, sp_ = 0, opcode_ = 0,
-    delay_timer_ = 0, sound_timer_ = 0;
+
     srand(time(nullptr));
 }
 
@@ -40,15 +18,10 @@ std::array<WORD, kDisplaySize> Chip8::getDisplay() {
     return display_;
 }
 
-void Chip8::setKeypad(std::array<BYTE, 16> newKeypad) {
-    keypad_ = newKeypad;
-}
-
 void Chip8::loadRom(const char *filePath) {
     std::ifstream fs;
     fs.open(filePath, std::ios::binary);
-    fs.seekg(0, std::ifstream::end);
-    int size = fs.tellg();
+    const int size = fs.tellg();
     fs.seekg(0, std::ifstream::beg);
     char *buffer = new char[size];
     fs.read(buffer, size);
@@ -56,187 +29,205 @@ void Chip8::loadRom(const char *filePath) {
     for (int i = 0; i < size; i++) {
         memory_[kStart + i] = buffer[i];
     }
+
+    delete[] buffer;
 }
 
 SHORT Chip8::nibble(SHORT val, SHORT val_to_binary_and, int bits) {
     return ((val & val_to_binary_and) >> bits);
 }
 
-auto Chip8::instructions() -> void {
+void Chip8::setKey(BYTE key, BYTE state) {
+    keypad_[key] = state;
+}
+
+void Chip8::instructions() {
     opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
-    BYTE nibblet = nibble(opcode_, 0xF000, 12);
+    const SHORT kk = opcode_ & 0x00FF;
+    const SHORT x = nibble(opcode_, 0x0F00, 8);
+    const SHORT y = nibble(opcode_, 0x00F0, 4);
+
     pc_ += 2;
-    switch (nibblet) {
+    const BYTE left_byte = nibble(opcode_, 0xF000, 12);
+    switch (left_byte) {
         case 0x0: {
             switch (opcode_) {
                 case 0x00E0: {
                     std::fill(display_.begin(), display_.end(), 0);
-                } break;
+                    draw_ = true;
+                    break;
+                }
                 case 0x00EE: {
-                    pc_ = stack_[--sp_];
-                } break;
+                    --sp_;
+                    pc_ = stack_[sp_];
+                    pc_ += 2;
+                    break;
+                }
             }
-        } break;
+            break;
+        }
         case 0x1: {
             pc_ = opcode_ & 0x0FFF;
-        } break;
+            break;
+        }
         case 0x2: {
+            pc_ -= 2;
             stack_[sp_++] = pc_;
             pc_ = opcode_ & 0x0FFF;
-        } break;
+            break;
+        }
         case 0x3: {
-            nibblet = opcode_ & 0x00FF;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            if (v_registers_[x] == nibblet) { pc_ += 2; }
-        } break;
+            if (v_registers_[x] == kk) pc_ += 2; 
+            break;
+        }
         case 0x4: {
-            nibblet = opcode_ & 0x00FF;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            if (v_registers_[x] != nibblet) { pc_ += 2; }
-        } break;
+            if (v_registers_[x] != kk) pc_ += 2;
+            break;
+        }
         case 0x5: {
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            SHORT y = nibble(opcode_, 0x00F0, 4);
-            if (v_registers_[x] == v_registers_[y]) { pc_ += 2; }
-        } break;
+            if (v_registers_[x] == v_registers_[y]) pc_ += 2;
+            break;
+        }
         case 0x6: {
-            nibblet = opcode_ & 0x00FF;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            v_registers_[x] = nibblet;
-        } break;
+            v_registers_[x] = kk;
+            break;
+        }
         case 0x7: {
-            nibblet = opcode_ & 0x00FF;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            v_registers_[x] += nibblet;
-        } break;
+            v_registers_[x] += kk;
+            break;
+        }
         case 0x8: {
-            nibblet = opcode_ & 0x000F;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            SHORT y = nibble(opcode_, 0x00F0, 4);
-            switch (nibblet) {
+            switch (kk) {
                 case 0x0: {
                     v_registers_[x] = v_registers_[y];
-                } break;
+                    break;
+                }
                 case 0x1: {
                     v_registers_[x] |= v_registers_[y];
-                } break;
+                    break;
+                }
                 case 0x2: {
                     v_registers_[x] &= v_registers_[y];
-                } break;
+                    break;
+                }
                 case 0x3: {
                     v_registers_[x] ^= v_registers_[y];
-                } break;
+                    break;
+                }
                 case 0x4: {
-                    SHORT sum = v_registers_[x] + v_registers_[y];
-                    if (sum > 255u) { v_registers_[0xF] = 1; }
-                    else            { v_registers_[0xF] = 0; }
-                    v_registers_[x] = sum & 0xFFu;
-                } break;
+                    v_registers_[0xF] = static_cast<BYTE>((v_registers_[x] + v_registers_[y]) > 0xFF);
+                    v_registers_[x] += v_registers_[y];
+                    break;
+                }
                 case 0x5: {
-                    if (v_registers_[x] > v_registers_[y])  { v_registers_[0xF] = 1; }
-                    else                                    { v_registers_[0xF] = 0; }
+                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] > v_registers_[y]);
                     v_registers_[x] -= v_registers_[y];
-                } break;
+                    break;
+                }
                 case 0x6: {
-                    v_registers_[0xF] = v_registers_[x] & 0x1u;
+                    v_registers_[0xF] = v_registers_[x] & 0x1;
                     v_registers_[x] >>= 1;
-                } break;
+                    break;
+                }
                 case 0x7: {
-                    if (v_registers_[y] > v_registers_[x])  { v_registers_[0xF] = 1; }
-                    else                                    { v_registers_[0xF] = 0; }
+                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] < v_registers_[y]);
                     v_registers_[x] = v_registers_[y] - v_registers_[x];
-                } break;
+                    break;
+                }
                 case 0xE: {
-                    v_registers_[0xF] = (v_registers_[x] & 0x80u) >> 7u;
+                    v_registers_[0xF] = v_registers_[x] >> 7;
                     v_registers_[x] <<= 1;
-                } break;
+                    break;
+                }
             }
             break;
         }
         case 0x9: {
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            SHORT y = nibble(opcode_, 0x00F0, 4);
             if (v_registers_[x] != v_registers_[y]) pc_ += 2;
-        } break;
+            break;
+        }
         case 0xA: {
             I_ = opcode_ & 0x0FFF;
-        } break;
+            break;
+        }
         case 0xB: {
             pc_ = (opcode_ & 0x0FFF) + v_registers_[0];
-        } break;
+            break;
+        }
         case 0xC: {
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            BYTE value = opcode_ & 0x00FF;
-            v_registers_[x] = value & rand();
-        } break;
+            v_registers_[x] = kk & rand();
+            break;
+        }
         case 0xD: {
-            BYTE x = nibble(opcode_, 0x0F00, 8);
-            BYTE y = nibble(opcode_, 0x00F0, 4);
-            BYTE height = opcode_ & 0x000F;
-            BYTE x_pos = v_registers_[x] % kHeight;
-            BYTE y_pos = v_registers_[y] % kWidth;
             v_registers_[0xF] = 0;
+            draw_ = true;
+
+            const BYTE height = opcode_ & 0x000F;
+            const BYTE x_pos = v_registers_[x] % kHeight;
+            const BYTE y_pos = v_registers_[y] % kWidth;
+            
             for (BYTE row = 0; row < height; row++) {
-                WORD data = memory_[I_ + row];
+                WORD const data = memory_[I_ + row];
                 for(unsigned int column = 0; column < 8; column++) {
-                    BYTE pixel = data & (0x80u >> column);
+                    const BYTE pixel = data & (0x80U >> column);
                     if (pixel) {
-                        if (display_[(y_pos + row) * kHeight + (x_pos + column)]) {
-                            v_registers_[0xF] = 1;
-                        }
+                        v_registers_[0xF] |= static_cast<BYTE>(display_[(y_pos + row) * kHeight + (x_pos + column)] == 1);
                         display_[(y_pos + row) * kHeight + (x_pos + column)] ^= 0xFFFFFFFF;
                     }
                 }
             }
-        } break;
-        case 0xE: {//keys
-            nibblet = opcode_ & 0x00FF;
-            SHORT x = nibble(opcode_, 0x0F00, 8);
-            BYTE key = v_registers_[x];
-            switch (nibblet) {
+            break;
+        }
+        case 0xE: {
+            switch (kk) {
                 case 0x9E: {
-                    if (keypad_[key]) {
-                        pc_ += 2;
-                    }
-                } break;
+                    if (keypad_[v_registers_[x]]) pc_ += 2;
+                    break;
+                }
                 case 0xA1: {
-                    if (!keypad_[key]) {
-                        pc_ += 2;
-                    }
-                } break;
+                    if (!keypad_[v_registers_[x]]) pc_ += 2;
+                    break;
+                }
             }
-        } break;
+            break;
+        }
         case 0xF: {
-            nibblet = opcode_ & 0x00FF;
-            BYTE x = nibble(opcode_, 0x0F00, 8);
-            switch (nibblet) {
+            switch (kk) {
                 case 0x07: {
                     v_registers_[x] = delay_timer_;
-                } break;
+                    break;
+                }
                 case 0x0A: {
+                    int key_pressed = 0;
                     for (BYTE i = 0; i < 16; i++) {
                         if (keypad_[i]) {
                             v_registers_[x] = i;
+                            key_pressed = 1;
                             break;
                         }
-                        else if (i == 15) {
-                            pc_ -= 2;
-                        }
                     }
-                    
-                } break;
+                    if (!key_pressed) {
+                        pc_ -= 2;
+                    }  
+                    break;
+                }
                 case 0x15: {
                     delay_timer_ = v_registers_[x];
-                } break;
+                    break;
+                }
                 case 0x18: {
                     sound_timer_ = v_registers_[x];
-                } break;
+                    break;
+                }
                 case 0x1E: {
+                    v_registers_[0xF] = static_cast<BYTE>((I_ + v_registers_[x]) > 0xFFF);
                     I_ += v_registers_[x];
-                } break;
+                    break;
+                }
                 case 0x29: {
-                    I_ = (v_registers_[x] * 5) + kFontsetSize;
-                } break;
+                    I_ = (v_registers_[x] * 5);
+                    break;
+                }
                 case 0x33: {
                     BYTE v_register_value = v_registers_[x];
                     memory_[I_ + 2] = v_register_value % 10;
@@ -244,18 +235,29 @@ auto Chip8::instructions() -> void {
                     memory_[I_ + 1] = v_register_value % 10;
                     v_register_value /= 10;
                     memory_[I_] = v_register_value % 10;
-                } break;
+                    break;
+                }
                 case 0x55: {
                     for (int i = 0; i <= x; i++) {
                         memory_[I_ + i] = v_registers_[i];
                     }
-                } break;
+                    break;
+                }
                 case 0x65: {
                     for (int i = 0; i <= x; i++) {
                         v_registers_[i] = memory_[I_ + i];
                     }
-                } break;
+                    break;
+                }
             }
-        } break;
+            break;
+        }
+    }
+
+    if (delay_timer_) {
+        --delay_timer_;
+    }
+    if (sound_timer_) {
+        --sound_timer_;
     }
 }
