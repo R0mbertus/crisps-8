@@ -39,6 +39,7 @@ SHORT Chip8::nibble(SHORT val, SHORT val_to_binary_and, int bits) {
 
 void Chip8::setKey(BYTE key, BYTE state) {
     keypad_[key] = state;
+    latest_key_ = key;
 }
 
 void Chip8::instructions() {
@@ -58,9 +59,8 @@ void Chip8::instructions() {
                     break;
                 }
                 case 0x00EE: {
-                    --sp_;
                     pc_ = stack_[sp_];
-                    pc_ += 2;
+                    sp_--;
                     break;
                 }
             }
@@ -71,8 +71,7 @@ void Chip8::instructions() {
             break;
         }
         case 0x2: {
-            pc_ -= 2;
-            stack_[sp_++] = pc_;
+            stack_[++sp_] = pc_;
             pc_ = opcode_ & 0x0FFF;
             break;
         }
@@ -115,8 +114,9 @@ void Chip8::instructions() {
                     break;
                 }
                 case 0x4: {
-                    v_registers_[0xF] = static_cast<BYTE>((v_registers_[x] + v_registers_[y]) > 0xFF);
-                    v_registers_[x] += v_registers_[y];
+                    const SHORT sum = v_registers_[x] + v_registers_[y];
+                    v_registers_[0xF] = static_cast<BYTE>(sum > 0xFF);
+                    v_registers_[x] = sum & 0xFF;
                     break;
                 }
                 case 0x5: {
@@ -151,11 +151,11 @@ void Chip8::instructions() {
             break;
         }
         case 0xB: {
-            pc_ = (opcode_ & 0x0FFF) + v_registers_[0];
+            pc_ = ((opcode_ & 0x0FFF) + v_registers_[0]) & 0x0FFF;
             break;
         }
         case 0xC: {
-            v_registers_[x] = kk & rand();
+            v_registers_[x] = kk & (rand() % 255);
             break;
         }
         case 0xD: {
@@ -181,11 +181,11 @@ void Chip8::instructions() {
         case 0xE: {
             switch (kk) {
                 case 0x9E: {
-                    if (keypad_[v_registers_[x]]) pc_ += 2;
+                    if (v_registers_[x] == latest_key_) pc_ += 2;
                     break;
                 }
                 case 0xA1: {
-                    if (!keypad_[v_registers_[x]]) pc_ += 2;
+                    if (v_registers_[x] != latest_key_) pc_ += 2;
                     break;
                 }
             }
@@ -198,17 +198,8 @@ void Chip8::instructions() {
                     break;
                 }
                 case 0x0A: {
-                    int key_pressed = 0;
-                    for (BYTE i = 0; i < 16; i++) {
-                        if (keypad_[i]) {
-                            v_registers_[x] = i;
-                            key_pressed = 1;
-                            break;
-                        }
-                    }
-                    if (!key_pressed) {
-                        pc_ -= 2;
-                    }  
+                    if (keypad_[latest_key_]) v_registers_[x] = latest_key_;
+                    else pc_ -= 2;
                     break;
                 }
                 case 0x15: {
@@ -221,11 +212,11 @@ void Chip8::instructions() {
                 }
                 case 0x1E: {
                     v_registers_[0xF] = static_cast<BYTE>((I_ + v_registers_[x]) > 0xFFF);
-                    I_ += v_registers_[x];
+                    I_ = (I_ + v_registers_[x]) & 0xFFF;
                     break;
                 }
                 case 0x29: {
-                    I_ = (v_registers_[x] * 5);
+                    I_ = (v_registers_[x] * 5) & 0xFFF;
                     break;
                 }
                 case 0x33: {

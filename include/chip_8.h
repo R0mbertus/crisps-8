@@ -33,6 +33,7 @@ class Chip8 {
     SHORT pc_ = kStart;
     SHORT I_ = {};
     BYTE sp_ = {};
+    BYTE latest_key_ = {};
     BYTE delay_timer_ = {};
     BYTE sound_timer_ = {};
 
