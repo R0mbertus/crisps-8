@@ -9,3 +9,9 @@ target_include_directories(crisps-8
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/src
 )
+
+target_link_libraries(crisps-8 
+    PUBLIC
+    SDL2::SDL2
+    SDL2::SDL2main
+)

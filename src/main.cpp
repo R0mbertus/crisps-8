@@ -1,6 +1,6 @@
 #include "display.h"
 #include "chip_8.h"
-#include <SDL2/SDL.h>
+#include "SDL.h"
 #include <iostream>
 #include <chrono>
 
