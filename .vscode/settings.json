@@ -18,6 +18,9 @@
         "utility": "cpp",
         "stdexcept": "cpp",
         "new": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "string": "cpp",
+        "string_view": "cpp",
+        "random": "cpp"
     },
 }
