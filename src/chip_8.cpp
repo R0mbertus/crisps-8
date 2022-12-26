@@ -97,7 +97,7 @@ void Chip8::instructions() {
             break;
         }
         case 0x8: {
-            switch (kk) {
+            switch (opcode_ & 0xF) {
                 case 0x0: {
                     v_registers_[x] = v_registers_[y];
                     break;
