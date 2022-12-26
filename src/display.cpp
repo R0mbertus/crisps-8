@@ -8,7 +8,7 @@ Display::Display(int set_scale) {
             "chips-8",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             kHeight * scale_, kWidth * scale_,
-            SDL_WINDOW_SHOWN | SDL_WINDOW_UTILITY);
+            SDL_WINDOW_SHOWN);
     if (window_ == nullptr) {//In case the window couldn't be created, throw exception
         std::cout << "Error creating window: " << SDL_GetError();
         SDL_Quit();

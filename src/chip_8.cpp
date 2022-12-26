@@ -8,7 +8,7 @@
 
 Chip8::Chip8() {
     for (size_t i = 0; i < kFontsetSize; i++) {
-        memory_[i] = kFontset[i];
+        memory_[i + kFontsetSize] = kFontset[i];
     }
 
     srand(time(nullptr));

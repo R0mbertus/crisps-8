@@ -1,6 +1,6 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include <array>
 #include <stdexcept>
 #include <iostream>

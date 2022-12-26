@@ -21,6 +21,8 @@
         "vector": "cpp",
         "string": "cpp",
         "string_view": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "fstream": "cpp"
     },
 }
