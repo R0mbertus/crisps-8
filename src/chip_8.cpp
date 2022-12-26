@@ -21,6 +21,7 @@ std::array<WORD, kDisplaySize> Chip8::getDisplay() {
 void Chip8::loadRom(const char *filePath) {
     std::ifstream fs;
     fs.open(filePath, std::ios::binary);
+    fs.seekg(0, std::ifstream::end);
     const int size = fs.tellg();
     fs.seekg(0, std::ifstream::beg);
     char *buffer = new char[size];
