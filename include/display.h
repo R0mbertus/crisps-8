@@ -2,6 +2,8 @@
 #define DISPLAY_H
 #include <SDL2/SDL.h>
 #include <array>
+#include <stdexcept>
+#include <iostream>
 #include "chip_8_definitions.h"
 #include "chip_8.h"
 

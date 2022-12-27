@@ -10,7 +10,9 @@ Display::Display(int set_scale) {
             kHeight * scale_, kWidth * scale_,
             SDL_WINDOW_SHOWN);
     if (window_ == nullptr) {//In case the window couldn't be created, throw exception
-        throw std::runtime_error("Could not create window: ");
+        std::cout << "Error creating window: " << SDL_GetError();
+        SDL_Quit();
+        std::exit(1);
     }
 
     renderer_ = SDL_CreateRenderer(

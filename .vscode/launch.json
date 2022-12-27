@@ -6,7 +6,9 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/build/crisps-8",
-            "args": [],
+            "args": [
+                "${input:args}"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
@@ -19,6 +21,14 @@
                     "ignoreFailures": true
                 },
             ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "args",
+            "type":"promptString",
+            "description": "args for gdb",
+            "default": ""
         }
     ]
 }

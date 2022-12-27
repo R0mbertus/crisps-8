@@ -8,7 +8,7 @@
 
 Chip8::Chip8() {
     for (size_t i = 0; i < kFontsetSize; i++) {
-        memory_[kFontsetSize + i] = kFontset[i];
+        memory_[i + kFontsetSize] = kFontset[i];
     }
 
     srand(time(nullptr));
@@ -98,7 +98,7 @@ void Chip8::instructions() {
             break;
         }
         case 0x7: {
-            v_registers_[x] += kk;
+            v_registers_[x] = (v_registers_[x] + kk) & 0xFF;
             break;
         }
         case 0x8: {
@@ -132,7 +132,7 @@ void Chip8::instructions() {
                 }
                 case 0x6: {
                     v_registers_[0xF] = v_registers_[x] & 0x1;
-                    v_registers_[x] >>= 1;
+                    v_registers_[x] = v_registers_[y] >> 1;
                     break;
                 }
                 case 0x7: {
@@ -142,7 +142,7 @@ void Chip8::instructions() {
                 }
                 case 0xE: {
                     v_registers_[0xF] = v_registers_[x] >> 7;
-                    v_registers_[x] <<= 1;
+                    v_registers_[x] = v_registers_[y] << 1;
                     break;
                 }
             }
@@ -161,7 +161,7 @@ void Chip8::instructions() {
             break;
         }
         case 0xC: {
-            v_registers_[x] = kk & (rand() % 255);
+            v_registers_[x] = kk & (rand() % 0xFF);
             break;
         }
         case 0xD: {
@@ -172,14 +172,18 @@ void Chip8::instructions() {
             const BYTE x_pos = v_registers_[x] % kHeight;
             const BYTE y_pos = v_registers_[y] % kWidth;
             
-            for (BYTE row = 0; row < height; row++) {
-                WORD const data = memory_[I_ + row];
-                for(unsigned int column = 0; column < 8; column++) {
-                    const BYTE pixel = data & (0x80U >> column);
+            for (size_t i = 0; i < height; i++) {
+                BYTE sprite = memory_[I_ + i];
+                const WORD row = (y_pos + i) % kWidth;
+                for(size_t j = 0; j < 8; j++) {
+                    const BYTE pixel = (sprite & 0x80U) >> 7;
+                    const WORD col = (x_pos + j) % kHeight;
+                    const WORD offset = row * 64 + col;
                     if (pixel) {
-                        v_registers_[0xF] |= static_cast<BYTE>(display_[(y_pos + row) * kHeight + (x_pos + column)] == 1);
-                        display_[(y_pos + row) * kHeight + (x_pos + column)] ^= 0xFFFFFFFF;
+                        v_registers_[0xF] |= static_cast<BYTE>(display_[offset]);
+                        display_[(y_pos + row) * kHeight + (x_pos + col)] ^= 0xFFFFFFFF;
                     }
+                    sprite <<= 1;
                 }
             }
             break;
