@@ -40,12 +40,7 @@ SHORT Chip8::nibble(SHORT val, SHORT val_to_binary_and, int bits) {
 
 void Chip8::setKey(BYTE key, BYTE state) {
     keypad_[key] = state;
-    if (state) {
-        latest_key_ = key;
-    }
-    else {
-        latest_key_ = 0xFF;
-    }
+    latest_key_ = key;
 }
 
 void Chip8::instructions() {
