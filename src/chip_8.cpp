@@ -21,6 +21,7 @@ std::array<WORD, kDisplaySize> Chip8::getDisplay() {
 void Chip8::loadRom(const char *filePath) {
     std::ifstream fs;
     fs.open(filePath, std::ios::binary);
+    fs.seekg(0, std::ifstream::end);
     const int size = fs.tellg();
     fs.seekg(0, std::ifstream::beg);
     char *buffer = new char[size];
@@ -39,8 +40,12 @@ SHORT Chip8::nibble(SHORT val, SHORT val_to_binary_and, int bits) {
 
 void Chip8::setKey(BYTE key, BYTE state) {
     keypad_[key] = state;
-    if (state) latest_key_ = key;
-    else latest_key_ = 0xFF;
+    if (state) {
+        latest_key_ = key;
+    }
+    else {
+        latest_key_ = 0xFF;
+    }
 }
 
 void Chip8::instructions() {
@@ -97,7 +102,7 @@ void Chip8::instructions() {
             break;
         }
         case 0x8: {
-            switch (kk) {
+            switch (opcode_ & 0xF) {
                 case 0x0: {
                     v_registers_[x] = v_registers_[y];
                     break;
