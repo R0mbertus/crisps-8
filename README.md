@@ -7,13 +7,14 @@ This has been a little project of mine for about half a year, working on it when
 To build this program, you need:
 * A C++ compiler like ```g++``` or `clang++`
 * `cmake`
-* `SDL2`
+* `SDL2`  
+
 For debian based system running `sudo apt install g++ cmake libsdl2 libsdl2-dev` should be sufficient.
 
 ## Running
 To run the program, build with cmake and do `./build/crisps-8 <Display Scale> <Delay> <ROM>`  
-Here, `<Display Scale>` is the scale of the window,  
-`<Delay>` is the delay between frames,
+Here, `<Display Scale>` is the scale of the window,
+`<Delay>` is the delay between frames and
 `<ROM>` is the path to a ROM, which are supplied in the `data/` directory
 
 ## Resources used
