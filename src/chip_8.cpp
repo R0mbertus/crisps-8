@@ -11,7 +11,7 @@ Chip8::Chip8() {
         memory_[kFontsetSize + i] = kFontset[i];
     }
 
-    srand(time(nullptr));
+    srand(time(nullptr)); //change to proper random
 }
 
 std::array<WORD, kDisplaySize> Chip8::getDisplay() {
@@ -177,7 +177,7 @@ void Chip8::instructions() {
                 for(unsigned int column = 0; column < 8; column++) {
                     const BYTE pixel = data & (0x80U >> column);
                     if (pixel) {
-                        v_registers_[0xF] |= static_cast<BYTE>(display_[(y_pos + row) * kHeight + (x_pos + column)] == 1);
+                        v_registers_[0xF] |= static_cast<BYTE>(display_[(y_pos + row) * kHeight + (x_pos + column)] == 0xFFFFFFFF);
                         display_[(y_pos + row) * kHeight + (x_pos + column)] ^= 0xFFFFFFFF;
                     }
                 }
