@@ -1,10 +1,12 @@
 #include "chip_8.h"
-#include "chip_8_definitions.h"
-#include <chrono>
+
+#include <array>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <random>
+
+#include "chip_8_definitions.h"
 
 Chip8::Chip8() {
     for (size_t i = 0; i < kFontsetSize; i++) {
@@ -18,23 +20,23 @@ std::array<WORD, kDisplaySize> Chip8::getDisplay() {
     return display_;
 }
 
-void Chip8::loadRom(const char *filePath) {
-    std::ifstream fs;
-    fs.open(filePath, std::ios::binary);
-    fs.seekg(0, std::ifstream::end);
-    const int size = fs.tellg();
-    fs.seekg(0, std::ifstream::beg);
-    char *buffer = new char[size];
-    fs.read(buffer, size);
+void Chip8::loadRom(const char *file_path) {
+    FILE *fp = std::fopen(file_path, "r");
+    std::fseek(fp, 0, SEEK_END);
+    const size_t rom_size = std::ftell(fp);
+    std::fseek(fp, 0, SEEK_SET);
 
-    for (int i = 0; i < size; i++) {
-        memory_[kStart + i] = buffer[i];
+    if (rom_size < kMemorySize - kRomStart) {
+        std::fread(&memory_[kRomStart], sizeof(BYTE), rom_size, fp);
+        fclose(fp);
     }
-
-    delete[] buffer;
+    else {
+        std::cerr << "Rom size too big\n";
+        std::exit(1);
+    }
 }
 
-SHORT Chip8::nibble(SHORT val, SHORT val_to_binary_and, int bits) {
+SHORT Chip8::take_chunk(SHORT val, SHORT val_to_binary_and, int bits) {
     return ((val & val_to_binary_and) >> bits);
 }
 
@@ -51,11 +53,11 @@ void Chip8::setKey(BYTE key, BYTE state) {
 void Chip8::instructions() {
     opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
     const SHORT kk = opcode_ & 0x00FF;
-    const SHORT x = nibble(opcode_, 0x0F00, 8);
-    const SHORT y = nibble(opcode_, 0x00F0, 4);
+    const SHORT x = take_chunk(opcode_, 0x0F00, 8);
+    const SHORT y = take_chunk(opcode_, 0x00F0, 4);
 
     pc_ += 2;
-    const BYTE left_byte = nibble(opcode_, 0xF000, 12);
+    const BYTE left_byte = take_chunk(opcode_, 0xF000, 12);
     switch (left_byte) {
         case 0x0: {
             switch (opcode_) {

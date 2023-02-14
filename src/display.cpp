@@ -1,5 +1,14 @@
 #include "display.h"
 
+#include <array>
+#include <stdexcept>
+#include <iostream>
+
+#include <SDL2/SDL.h>
+
+#include "chip_8_definitions.h"
+#include "chip_8.h"
+
 Display::Display(int set_scale) {
     SDL_Init(SDL_INIT_VIDEO);
     scale_ = set_scale;
@@ -9,23 +18,18 @@ Display::Display(int set_scale) {
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             kHeight * scale_, kWidth * scale_,
             SDL_WINDOW_SHOWN);
-    if (window_ == nullptr) {//In case the window couldn't be created, throw exception
-        std::cout << "Error creating window: " << SDL_GetError();
-        SDL_Quit();
-        std::exit(1);
-    }
 
     renderer_ = SDL_CreateRenderer(
             window_, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer_ == nullptr) {
-        throw std::runtime_error("Could not create renderer: ");
-    }
 
     texture_ = SDL_CreateTexture(
             renderer_, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC,
             kHeight, kWidth);
-    if (texture_ == nullptr) {
-        throw std::runtime_error("Could not create texture: ");
+
+    if (!window_ || !renderer_ || !texture_) {
+        std::cerr << SDL_GetError() << "\n\n";
+        SDL_Quit();
+        std::exit(1);
     }
 }
 

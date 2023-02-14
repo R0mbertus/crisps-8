@@ -2,7 +2,8 @@
 crisps-8 is a [chip-8](https://en.wikipedia.org/wiki/CHIP-8) interpreter written in C++ using SDL2.  
 This is still a W.I.P. but a basic working chip-8 interpreter (i.e. working logic, display, keypad) is implemented, but 
 is currently still missing features such as sound or support for switching between different settings for ambigious 
-instructions and might also have some bugs. 
+instructions and might also have some bugs.  
+This project tries to stick to the google c++ code style.
 
 ## Motivation
 This has been a project of mine for about half a year, working on during the summer and then next to my uni courses when

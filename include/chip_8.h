@@ -1,8 +1,10 @@
 #ifndef CHIP_8_H
 #define CHIP_8_H
-#include "chip_8_definitions.h"
+
 #include <array>
-#include <vector>
+#include <cstdint>
+
+#include "chip_8_definitions.h"
 
 const std::array<BYTE, kFontsetSize> kFontset = {
     0xF0, 0x90, 0x90, 0x90, 0xF0,// 0
@@ -30,7 +32,7 @@ class Chip8 {
     std::array<BYTE, kSmallSize> v_registers_ = {};
     std::array<SHORT, kSmallSize> stack_ = {};
     SHORT opcode_ = {};
-    SHORT pc_ = kStart;
+    SHORT pc_ = kRomStart;
     SHORT I_ = {};
     BYTE sp_ = {};
     BYTE latest_key_ = {};
@@ -40,8 +42,8 @@ class Chip8 {
 public:
     Chip8();
     std::array<WORD, (kDisplaySize)> getDisplay();
+    static SHORT take_chunk(SHORT val, SHORT val_to_binary_and, int bits);
     void loadRom(const char *filePath);
-    static SHORT nibble(SHORT val, SHORT val_to_binary_and, int bits);
     void setKey(BYTE key, BYTE state);
     void instructions();
 
