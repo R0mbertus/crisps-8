@@ -44,7 +44,6 @@ next being listed at the bottom.
 - [ ] Advanced chip-8 features
     - [ ] Working sound
     - [ ] Support for ambigious instruction switching
-    - [ ] Performance optimizations
     - [ ] Testing suite
 - [ ] Future ideas (some might be better as seperate projects)
     - [ ] Add package manager to elimanate need for manual package install
