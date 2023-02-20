@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         if (time_difference >= delay_per_frame) {
             last_time = current_time;
             
-            chip8.instructions();
+            chip8.executeInstruction();
             if (chip8.draw_) {
                 display.update(chip8.getDisplay());
                 chip8.draw_ = false;

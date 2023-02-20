@@ -12,8 +12,6 @@ Chip8::Chip8() {
     for (size_t i = 0; i < kFontsetSize; i++) {
         memory_[kFontsetSize + i] = kFontset[i];
     }
-
-    srand(time(nullptr)); //change to proper random
 }
 
 std::array<WORD, kDisplaySize> Chip8::getDisplay() {
@@ -42,7 +40,7 @@ SHORT Chip8::take_chunk(SHORT val, SHORT val_to_binary_and, int bits) {
 
 void Chip8::setKey(BYTE key, BYTE state) {
     keypad_[key] = state;
-    if (state) {
+    if (state != 0) {
         latest_key_ = key;
     }
     else {
@@ -50,7 +48,7 @@ void Chip8::setKey(BYTE key, BYTE state) {
     }
 }
 
-void Chip8::instructions() {
+void Chip8::executeInstruction() {
     opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
     const SHORT kk = opcode_ & 0x00FF;
     const SHORT x = take_chunk(opcode_, 0x0F00, 8);
@@ -163,7 +161,7 @@ void Chip8::instructions() {
             break;
         }
         case 0xC: {
-            v_registers_[x] = kk & (rand() % 255);
+            v_registers_[x] = kk & distrib_(gen_);
             break;
         }
         case 0xD: {
@@ -178,7 +176,7 @@ void Chip8::instructions() {
                 WORD const data = memory_[I_ + row];
                 for(unsigned int column = 0; column < 8; column++) {
                     const BYTE pixel = data & (0x80U >> column);
-                    if (pixel) {
+                    if (pixel != 0) {
                         v_registers_[0xF] |= static_cast<BYTE>(display_[(y_pos + row) * kHeight + (x_pos + column)] == 0xFFFFFFFF);
                         display_[(y_pos + row) * kHeight + (x_pos + column)] ^= 0xFFFFFFFF;
                     }
@@ -206,7 +204,7 @@ void Chip8::instructions() {
                     break;
                 }
                 case 0x0A: {
-                    if (keypad_[latest_key_]) v_registers_[x] = latest_key_;
+                    if (keypad_[latest_key_] != 0) v_registers_[x] = latest_key_;
                     else pc_ -= 2;
                     break;
                 }
@@ -253,10 +251,10 @@ void Chip8::instructions() {
         }
     }
 
-    if (delay_timer_) {
+    if (delay_timer_ != 0) {
         --delay_timer_;
     }
-    if (sound_timer_) {
+    if (sound_timer_ != 0) {
         --sound_timer_;
     }
 }

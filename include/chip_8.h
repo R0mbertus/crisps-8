@@ -3,6 +3,7 @@
 
 #include <array>
 #include <cstdint>
+#include <random>
 
 #include "chip_8_definitions.h"
 
@@ -26,26 +27,31 @@ const std::array<BYTE, kFontsetSize> kFontset = {
 };
 
 class Chip8 {
-    std::array<WORD, kDisplaySize> display_ = {};
-    std::array<BYTE, kSmallSize> keypad_ = {};
-    std::array<BYTE, kMemorySize> memory_ = {};
-    std::array<BYTE, kSmallSize> v_registers_ = {};
-    std::array<SHORT, kSmallSize> stack_ = {};
-    SHORT opcode_ = {};
+private:
+    std::array<WORD, kDisplaySize> display_{};
+    std::array<BYTE, kSmallSize> keypad_{};
+    std::array<BYTE, kMemorySize> memory_{};
+    std::array<BYTE, kSmallSize> v_registers_{};
+    std::array<SHORT, kSmallSize> stack_{};
+    SHORT opcode_{};
     SHORT pc_ = kRomStart;
-    SHORT I_ = {};
-    BYTE sp_ = {};
-    BYTE latest_key_ = {};
-    BYTE delay_timer_ = {};
-    BYTE sound_timer_ = {};
+    SHORT I_{};
+    BYTE sp_{};
+    BYTE latest_key_{};
+    BYTE delay_timer_{};
+    BYTE sound_timer_{};
+
+    std::mt19937 gen_{std::random_device{}()};
+    std::uniform_int_distribution<std::mt19937::result_type> distrib_{0, 255};
 
 public:
     Chip8();
+    ~Chip8() = default;
     std::array<WORD, (kDisplaySize)> getDisplay();
     static SHORT take_chunk(SHORT val, SHORT val_to_binary_and, int bits);
-    void loadRom(const char *filePath);
+    void loadRom(const char *file_path);
     void setKey(BYTE key, BYTE state);
-    void instructions();
+    void executeInstruction();
 
     bool draw_{true};
 };
