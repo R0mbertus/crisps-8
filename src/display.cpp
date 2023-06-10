@@ -1,4 +1,4 @@
-#include "display.h"
+#include "display.hh"
 
 #include <array>
 #include <stdexcept>
@@ -6,8 +6,8 @@
 
 #include <SDL2/SDL.h>
 
-#include "chip_8_definitions.h"
-#include "chip_8.h"
+#include "chip_8_definitions.hh"
+#include "chip_8.hh"
 
 Display::Display(int set_scale) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -16,7 +16,7 @@ Display::Display(int set_scale) {
     window_ = SDL_CreateWindow(
             "chips-8",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            kHeight * scale_, kWidth * scale_,
+            defaults::screen_height * scale_, defaults::screen_width * scale_,
             SDL_WINDOW_SHOWN);
 
     renderer_ = SDL_CreateRenderer(
@@ -24,7 +24,7 @@ Display::Display(int set_scale) {
 
     texture_ = SDL_CreateTexture(
             renderer_, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC,
-            kHeight, kWidth);
+            defaults::screen_height, defaults::screen_width);
 
     if (!window_ || !renderer_ || !texture_) {
         std::cerr << SDL_GetError() << "\n\n";
@@ -40,7 +40,7 @@ Display::~Display() {
     SDL_Quit();
 }
 
-void Display::update(std::array<WORD, (kHeight * kWidth)> display) {
+void Display::update(std::array<WORD, (defaults::screen_height * defaults::screen_width)> display) {
     SDL_UpdateTexture(texture_, nullptr, &display, pitch_);
     SDL_RenderClear(renderer_);
     SDL_RenderCopy(renderer_, texture_, nullptr, nullptr);
@@ -73,7 +73,7 @@ bool Display::EventHandler(Chip8 &chip8) {
 }
 
 void Display::keypress(SDL_Event event, BYTE val_to_set, Chip8 &chip8) {
-    for (BYTE i = 0; i < kSmallSize; i++) {
+    for (BYTE i = 0; i < defaults::small_size; i++) {
         if (event.key.keysym.sym == keymap_[i]) {
             chip8.setKey(i, val_to_set);
         }

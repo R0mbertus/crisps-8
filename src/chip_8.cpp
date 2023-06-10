@@ -1,4 +1,4 @@
-#include "chip_8.h"
+#include "chip_8.hh"
 
 #include <array>
 #include <cstdio>
@@ -6,15 +6,15 @@
 #include <iostream>
 #include <random>
 
-#include "chip_8_definitions.h"
+#include "chip_8_definitions.hh"
 
 Chip8::Chip8() {
-    for (size_t i = 0; i < kFontsetSize; i++) {
-        memory_[kFontsetSize + i] = kFontset[i];
+    for (size_t i = 0; i < defaults::fontset_size; i++) {
+        memory_[defaults::fontset_size + i] = defaults::fontset[i];
     }
 }
 
-std::array<WORD, kDisplaySize> Chip8::getDisplay() {
+std::array<WORD, defaults::screen_size> Chip8::getDisplay() {
     return display_;
 }
 
@@ -24,8 +24,8 @@ void Chip8::loadRom(const char *file_path) {
     const size_t rom_size = std::ftell(fp);
     std::fseek(fp, 0, SEEK_SET);
 
-    if (rom_size < kMemorySize - kRomStart) {
-        std::fread(&memory_[kRomStart], sizeof(BYTE), rom_size, fp);
+    if (rom_size < defaults::memory_size - defaults::rom_start) {
+        std::fread(&memory_[defaults::rom_start], sizeof(BYTE), rom_size, fp);
         fclose(fp);
     }
     else {
@@ -169,17 +169,29 @@ void Chip8::executeInstruction() {
             draw_ = true;
 
             const BYTE height = opcode_ & 0x000F;
-            const BYTE x_pos = v_registers_[x] % kHeight;
-            const BYTE y_pos = v_registers_[y] % kWidth;
+            const BYTE x_pos = v_registers_[x] % defaults::screen_height;
+            const BYTE y_pos = v_registers_[y] % defaults::screen_width;
             
-            for (BYTE row = 0; row < height; row++) {
-                WORD const data = memory_[I_ + row];
-                for(unsigned int column = 0; column < 8; column++) {
-                    const BYTE pixel = data & (0x80U >> column);
-                    if (pixel != 0) {
-                        v_registers_[0xF] |= static_cast<BYTE>(display_[(y_pos + row) * kHeight + (x_pos + column)] == 0xFFFFFFFF);
-                        display_[(y_pos + row) * kHeight + (x_pos + column)] ^= 0xFFFFFFFF;
+            for (WORD i = 0; i < height; i++) {
+                BYTE data = memory_[I_ + i];
+                const WORD row = (v_registers_[y] + i) % 32;
+
+                for(WORD j = 0; j < 8; j++) {
+                    const WORD pixel = (data & 0x80U) >> 7;
+                    const WORD column = (v_registers_[x] + j) % 64;
+                    const WORD offset = row * 64 + column;
+
+                    if (pixel == 1) {
+                        if (display_[offset] != 0) {
+                            display_[offset] = 0;
+                            v_registers_[0xF] = 1;
+                        }
+                        else {
+                            display_[offset] = 0xFFFFFF;
+                        }
                     }
+
+                    data <<= 1;
                 }
             }
             break;
@@ -258,3 +270,5 @@ void Chip8::executeInstruction() {
         --sound_timer_;
     }
 }
+
+

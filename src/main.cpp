@@ -1,10 +1,10 @@
 #include <iostream>
 #include <chrono>
 
-#include "SDL.h"
+#include <SDL.h>
 
-#include "display.h"
-#include "chip_8.h"
+#include "display.hh"
+#include "chip_8.hh"
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
