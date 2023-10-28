@@ -50,7 +50,7 @@ void Chip8::setKey(BYTE key, BYTE state) {
 
 void Chip8::executeInstruction() {
     opcode_ = memory_[pc_] << 8 | memory_[pc_ + 1];
-    const SHORT kk = opcode_ & 0x00FF;
+    const SHORT last_short = opcode_ & 0x00FF;
     const SHORT x = take_chunk(opcode_, 0x0F00, 8);
     const SHORT y = take_chunk(opcode_, 0x00F0, 4);
 
@@ -82,11 +82,11 @@ void Chip8::executeInstruction() {
             break;
         }
         case 0x3: {
-            if (v_registers_[x] == kk) pc_ += 2; 
+            if (v_registers_[x] == last_short) pc_ += 2; 
             break;
         }
         case 0x4: {
-            if (v_registers_[x] != kk) pc_ += 2;
+            if (v_registers_[x] != last_short) pc_ += 2;
             break;
         }
         case 0x5: {
@@ -94,11 +94,11 @@ void Chip8::executeInstruction() {
             break;
         }
         case 0x6: {
-            v_registers_[x] = kk;
+            v_registers_[x] = last_short;
             break;
         }
         case 0x7: {
-            v_registers_[x] += kk;
+            v_registers_[x] += last_short;
             break;
         }
         case 0x8: {
@@ -121,28 +121,28 @@ void Chip8::executeInstruction() {
                 }
                 case 0x4: {
                     const SHORT sum = v_registers_[x] + v_registers_[y];
-                    v_registers_[0xF] = static_cast<BYTE>(sum > 0xFF);
                     v_registers_[x] = sum & 0xFF;
+                    v_registers_[0xF] = static_cast<BYTE>(sum > 0xFF);
                     break;
                 }
                 case 0x5: {
-                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] > v_registers_[y]);
                     v_registers_[x] -= v_registers_[y];
+                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] > v_registers_[y]);
                     break;
                 }
                 case 0x6: {
-                    v_registers_[0xF] = v_registers_[x] & 0x1;
                     v_registers_[x] >>= 1;
+                    v_registers_[0xF] = v_registers_[x] & 0x1;
                     break;
                 }
                 case 0x7: {
-                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] < v_registers_[y]);
                     v_registers_[x] = v_registers_[y] - v_registers_[x];
+                    v_registers_[0xF] = static_cast<BYTE>(v_registers_[x] < v_registers_[y]);
                     break;
                 }
                 case 0xE: {
-                    v_registers_[0xF] = v_registers_[x] >> 7;
                     v_registers_[x] <<= 1;
+                    v_registers_[0xF] = v_registers_[x] >> 7;
                     break;
                 }
             }
@@ -161,7 +161,7 @@ void Chip8::executeInstruction() {
             break;
         }
         case 0xC: {
-            v_registers_[x] = kk & distrib_(gen_);
+            v_registers_[x] = last_short & distrib_(gen_);
             break;
         }
         case 0xD: {
@@ -197,7 +197,7 @@ void Chip8::executeInstruction() {
             break;
         }
         case 0xE: {
-            switch (kk) {
+            switch (last_short) {
                 case 0x9E: {
                     if (v_registers_[x] == latest_key_) pc_ += 2;
                     break;
@@ -210,7 +210,7 @@ void Chip8::executeInstruction() {
             break;
         }
         case 0xF: {
-            switch (kk) {
+            switch (last_short) {
                 case 0x07: {
                     v_registers_[x] = delay_timer_;
                     break;
